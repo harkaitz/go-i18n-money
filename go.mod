@@ -1,4 +1,4 @@
-module github.com/harkaitz/go-parse-monetary
+module github.com/harkaitz/go-i18n-money
 
 go 1.21.1
 

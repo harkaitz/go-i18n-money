@@ -9,23 +9,18 @@ install:
 all: all-go
 install: install-go
 clean: clean-go
-deps: deps-go
-
+deps:
 build/parse-monetary$(EXE): deps
+	@mkdir -p build
 	go build -o $@ $(GO_CONF) ./cmd/parse-monetary
-
-all-go:  build/parse-monetary$(EXE)
-deps-go:
-	mkdir -p build
+all-go: build/parse-monetary$(EXE)
 install-go:
-	install -d $(DESTDIR)$(PREFIX)/bin
-	cp  build/parse-monetary$(EXE) $(DESTDIR)$(PREFIX)/bin
+	install -D -t $(DESTDIR)$(PREFIX)/bin build/parse-monetary$(EXE)
 clean-go:
-	rm -f  build/parse-monetary$(EXE)
+	rm -f build/parse-monetary$(EXE)
 ## -- BLOCK:go --
 ## -- BLOCK:license --
 install: install-license
 install-license: 
-	mkdir -p $(DESTDIR)$(PREFIX)/share/doc/$(PROJECT)
-	cp LICENSE  $(DESTDIR)$(PREFIX)/share/doc/$(PROJECT)
+	install -D -t $(DESTDIR)$(PREFIX)/share/doc/$(PROJECT) LICENSE
 ## -- BLOCK:license --

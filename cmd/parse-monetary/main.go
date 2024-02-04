@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 	"fmt"
-	"github.com/harkaitz/go-parse-monetary"
+	"github.com/harkaitz/go-i18n-money"
 	"github.com/pborman/getopt/v2"
 )
 
@@ -27,7 +27,7 @@ func main() {
 	getopt.Parse()
 	if *hFlag || len(getopt.Args()) != 1 { getopt.Usage(); return }
 	
-	value, negative, err := money.Parse(getopt.Args()[0])
+	value, negative, err := i18nm.ParseMoney(getopt.Args()[0])
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
 		os.Exit(1)

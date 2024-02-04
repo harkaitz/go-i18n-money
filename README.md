@@ -27,10 +27,10 @@ Allow parenthesis to indicate negative values. Example:
 
 ## Go documentation
 
-    package money // import "github.com/harkaitz/go-parse-monetary"
+    package i18nm // import "github.com/harkaitz/go-i18n-money"
     
     type Cents uint64
-        func Parse(s string) (value Cents, negative bool, err error)
+        func ParseMoney(s string) (value Cents, negative bool, err error)
         func Value(a, b int) Cents
 
 ## Go programs

@@ -1,4 +1,4 @@
-package money
+package i18nm
 
 import (
 	"fmt"
@@ -13,15 +13,14 @@ func Value(a, b int) Cents {
 	return Cents(a*100 + b)
 }
 
-// Parse returns a Cents value from a string. For example
-// MoneyParse("1.23") returns 123 cents.
-//
-// The parsing uses the spanish custom of using a comma or a dot as
-// the decimal or thousands separator (depending on the position).
+// ParseMoney parses a monetary value string. It support english
+// notation "1.23" "$1,000,000.00" and spanish notation "1,23" and
+// "1.000.000,00". It uses the position of the comma or dot to
+// distinguish.
 //
 // The string may also contain a leading minus. All other characters
 // are ignored.
-func Parse(s string) (value Cents, negative bool, err error) {
+func ParseMoney(s string) (value Cents, negative bool, err error) {
 	var s2 string
 	var a, m, l int64 = 0, 0, -1
 	var c rune
@@ -48,4 +47,8 @@ func Parse(s string) (value Cents, negative bool, err error) {
 	_, err = fmt.Sscanf(s2, "%d", &a)
 	if err != nil { return Cents(0), false, err }
 	return Cents(a * int64(m)), negative, nil
+}
+
+func (c Cents) String() string {
+	return fmt.Sprintf("%d.%02d", c / 100, c % 100)
 }
