@@ -2,14 +2,15 @@ package i18nm
 
 import (
 	"fmt"
+	"errors"
 )
 
 // Cents holds a monetary value in cents.
 type Cents uint64
 
-// Value returns a Cents value from a pair of integers. For example
+// Money returns a Cents value from a pair of integers. For example
 // Money(1, 23) returns 123 cents.
-func Value(a, b int) Cents {
+func Money(a, b int) Cents {
 	return Cents(a*100 + b)
 }
 
@@ -51,4 +52,22 @@ func ParseMoney(s string) (value Cents, negative bool, err error) {
 
 func (c Cents) String() string {
 	return fmt.Sprintf("%d.%02d", c / 100, c % 100)
+}
+
+func (c Cents) Multiply(n int) Cents {
+	return c * Cents(n)
+}
+
+func (c Cents) DivideByInt(n int) (Cents, Cents, error) {
+	if (n == 0) {
+		return 0, 0, errors.New("Division by zero")
+	}
+	return c / Cents(n), c % Cents(n), nil
+}
+
+func (c Cents) DivideByMoney(n Cents) (int, Cents, error) {
+	if (n == 0) {
+		return 0, 0, errors.New("Division by zero")
+	}
+	return int(c) / int(n), c % n, nil
 }
