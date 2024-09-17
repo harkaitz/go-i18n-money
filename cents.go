@@ -71,3 +71,7 @@ func (c Cents) DivideByMoney(n Cents) (int, Cents, error) {
 	}
 	return int(c) / int(n), c % n, nil
 }
+
+func (c Cents) Zero() bool {
+	return c == 0
+}
