@@ -2,7 +2,6 @@ package i18nm
 
 import (
 	"fmt"
-	"errors"
 )
 
 // Cents holds a monetary value in cents.
@@ -23,27 +22,27 @@ func Money(a, b int) Cents {
 // are ignored.
 func ParseMoney(s string) (value Cents, negative bool, err error) {
 	var s2 string
-	var a, m, l int64 = 0, 0, -1
+	var a, m, ll int64 = 0, 0, -1
 	var c rune
 	for _, c = range s {
 		switch {
 		case c == '-' && len(s2) == 0:
 			negative = true
 		case c == '.' || c == ',' || c == '\'':
-			l = 0
+			ll = 0
 		case c >= '0' && c <= '9':
-			if l != -1 {
-				l++
+			if ll != -1 {
+				ll++
 			}
 			s2 += string(c)
 		}
 	}
-	switch l {
+	switch ll {
 	case -1: m = 100
 	case  1: m = 10
 	case  2: m = 1
 	case  3: m = 100
-	default: return Cents(0), false, fmt.Errorf("Invalid monetary format")
+	default: return Cents(0), false, newError(l("Invalid monetary format"))
 	}
 	_, err = fmt.Sscanf(s2, "%d", &a)
 	if err != nil { return Cents(0), false, err }
@@ -60,14 +59,14 @@ func (c Cents) Multiply(n int) Cents {
 
 func (c Cents) DivideByInt(n int) (Cents, Cents, error) {
 	if (n == 0) {
-		return 0, 0, errors.New("Division by zero")
+		return 0, 0, newError(l("Division by zero"))
 	}
 	return c / Cents(n), c % Cents(n), nil
 }
 
 func (c Cents) DivideByMoney(n Cents) (int, Cents, error) {
 	if (n == 0) {
-		return 0, 0, errors.New("Division by zero")
+		return 0, 0, newError(l("Division by zero"))
 	}
 	return int(c) / int(n), c % n, nil
 }
